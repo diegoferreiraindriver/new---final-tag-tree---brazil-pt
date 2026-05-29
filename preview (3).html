@@ -1,0 +1,1423 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tópicos com descrições recolhíveis</title>
+  <style>
+    :root {
+      --bg: #f6f7fb;
+      --panel: #ffffff;
+      --text: #1f2937;
+      --muted: #6b7280;
+      --line: #e5e7eb;
+      --soft: #f9fafb;
+      --accent: #111827;
+      --radius: 14px;
+      --shadow: 0 10px 25px rgba(15, 23, 42, 0.08);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+    }
+    .page {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 32px 18px 48px;
+    }
+    .hero {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      padding: 26px;
+      box-shadow: var(--shadow);
+      margin-bottom: 18px;
+    }
+    h1 {
+      margin: 0 0 8px;
+      font-size: clamp(24px, 4vw, 36px);
+      letter-spacing: -0.04em;
+    }
+    .subtitle { margin: 0; color: var(--muted); }
+    .toolbar {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 18px;
+    }
+    .search {
+      flex: 1 1 280px;
+      min-width: 240px;
+      padding: 12px 14px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      font-size: 15px;
+      outline: none;
+      background: var(--soft);
+    }
+    .search:focus { border-color: #9ca3af; background: #fff; }
+    button {
+      border: 1px solid var(--line);
+      background: #fff;
+      color: var(--text);
+      padding: 12px 14px;
+      border-radius: 12px;
+      cursor: pointer;
+      font-weight: 700;
+    }
+    button:hover { background: var(--soft); }
+    .stats {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 14px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+    .stat { background: var(--soft); border: 1px solid var(--line); padding: 7px 10px; border-radius: 999px; }
+    .accordion { display: grid; gap: 12px; }
+    details {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+    summary {
+      list-style: none;
+      cursor: pointer;
+      position: relative;
+      padding: 16px 50px 16px 18px;
+      font-weight: 700;
+      user-select: none;
+    }
+    summary::-webkit-details-marker { display: none; }
+    summary::after {
+      content: "+";
+      position: absolute;
+      right: 18px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 22px;
+      line-height: 1;
+      color: var(--muted);
+    }
+    details[open] > summary::after { content: "−"; }
+    .topic > summary {
+      font-size: 18px;
+      background: #fff;
+    }
+    .topic[open] > summary { border-bottom: 1px solid var(--line); }
+    .topic-body { padding: 12px; background: var(--soft); }
+    .category { margin: 10px 0; }
+    .category > summary { background: #fff; font-size: 15px; }
+    .category[open] > summary { border-bottom: 1px solid var(--line); }
+    .category-body { padding: 10px; display: grid; gap: 8px; background: #fff; }
+    .item { border-radius: 12px; background: var(--soft); }
+    .item > summary { font-weight: 700; padding: 13px 46px 13px 14px; }
+    .description {
+      padding: 0 14px 14px 14px;
+      color: #374151;
+    }
+    .description p {
+      margin: 0 0 10px;
+      white-space: pre-line;
+    }
+    .description p:last-child { margin-bottom: 0; }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-left: 8px;
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: var(--soft);
+      color: var(--muted);
+      border: 1px solid var(--line);
+      font-size: 12px;
+      font-weight: 700;
+      vertical-align: middle;
+    }
+    .empty { color: var(--muted); font-style: italic; }
+    mark { padding: 0 2px; border-radius: 3px; }
+    .hidden { display: none !important; }
+    @media (max-width: 640px) {
+      .page { padding: 18px 12px 36px; }
+      .hero { padding: 18px; }
+      button { flex: 1 1 auto; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <section class="hero">
+      <h1>Tópicos e descrições</h1>
+      <p class="subtitle">Clique em um tópico principal, depois em uma categoria e em uma subcategoria para ver a descrição.</p>
+      <div class="toolbar" aria-label="Ferramentas">
+        <input class="search" id="search" type="search" placeholder="Pesquisar tópico, subcategoria ou descrição..." aria-label="Pesquisar">
+        <button type="button" id="openAll">Abrir tudo</button>
+        <button type="button" id="closeAll">Fechar tudo</button>
+      </div>
+      <div class="stats">
+        <span class="stat">9 tópicos principais</span>
+        <span class="stat">48 categorias</span>
+        <span class="stat">153 subcategorias</span>
+        <span class="stat">154 descrições</span>
+      </div>
+    </section>
+    <section class="accordion" id="accordion">
+      <details class="topic" data-search="verification speed up the check document сorrection request reason of rejection can&#x27;t upload the documents photocontrol change/add the vertical basic transport change basic transport change docs issue photo issue wrong rejection unclear reason of rejection duplicate documents upload troubleshooting reason of rejection photocontrol city rides to courier add intercity add cargo solicitação para agilizar a verificação de documentos básicos. solicitação para agilizar a verificação de documentos de alteração de veículo. solicitação de alteração nos documentos no formulário do motorista solicitação de alteração de documento para alteração de veículo inscrição rejeitada devido a problemas com a documentação, prazo expirado, etc. o cadastro foi rejeitado devido a problemas com a foto: foto tirada incorretamente, imagem ilegível. cadastro rejeitado incorretamente o motivo da rejeição no watchdocs não está claro. solicitação rejeitada devido a conta duplicada. solicito ajuda com o envio de documentos, resolução de problemas relacionados ao envio de documentos, formato de arquivo, tamanho do arquivo, etc. dúvidas relacionadas ao motivo da rejeição controle por foto solicitação para adicionar a vertical &#x27;entregador&#x27; ou mudar da vertical cidade para a vertical entregador solicitação para adicionar transporte interurbano solicitação para adicionar frete">
+        <summary>Verification <span class="badge">6 categorias · 14 subcategorias</span></summary>
+        <div class="topic-body">
+          <details class="category">
+            <summary>Speed up the check <span class="badge">2 subcategorias</span></summary>
+            <div class="category-body">
+              <details class="item">
+                <summary>Basic</summary>
+                <div class="description">
+                  <p>Solicitação para agilizar a verificação de documentos básicos.</p>
+                </div>
+              </details>
+              <details class="item">
+                <summary>Transport change</summary>
+                <div class="description">
+                  <p>Solicitação para agilizar a verificação de documentos de alteração de veículo.</p>
+                </div>
+              </details>
+            </div>
+          </details>
+          <details class="category">
+            <summary>Document сorrection request <span class="badge">2 subcategorias</span></summary>
+            <div class="category-body">
+              <details class="item">
+                <summary>Basic</summary>
+                <div class="description">
+                  <p>Solicitação de alteração nos documentos no formulário do Motorista</p>
+                </div>
+              </details>
+              <details class="item">
+                <summary>Transport change</summary>
+                <div class="description">
+                  <p>Solicitação de alteração de documento para alteração de veículo</p>
+                </div>
+              </details>
+            </div>
+          </details>
+          <details class="category">
+            <summary>Reason of rejection <span class="badge">5 subcategorias</span></summary>
+            <div class="category-body">
+              <details class="item">
+                <summary>Docs issue</summary>
+                <div class="description">
+                  <p>Inscrição rejeitada devido a problemas com a documentação, prazo expirado, etc.</p>
+                </div>
+              </details>
+              <details class="item">
+                <summary>Photo issue</summary>
+                <div class="description">
+                  <p>O cadastro foi rejeitado devido a problemas com a foto: foto tirada incorretamente, imagem ilegível.</p>
+                </div>
+              </details>
+              <details class="item">
+                <summary>Wrong rejection</summary>
+                <div class="description">
+                  <p>Cadastro rejeitado incorretamente</p>
+                </div>
+              </details>
+              <details class="item">
+                <summary>Unclear reason of rejection</summary>
+                <div class="description">
+                  <p>O motivo da rejeição no WatchDocs não está claro.</p>
+                </div>
+              </details>
+              <details class="item">
+                <summary>Duplicate</summary>
+                <div class="description">
+                  <p>Solicitação rejeitada devido a conta duplicada.</p>
+                </div>
+              </details>
+            </div>
+          </details>
+          <details class="category">
+            <summary>Can&#x27;t upload the documents <span class="badge">1 subcategoria</span></summary>
+            <div class="category-body">
+              <details class="item">
+                <summary>Documents upload troubleshooting</summary>
+                <div class="description">
+                  <p>Solicito ajuda com o envio de documentos, resolução de problemas relacionados ao envio de documentos, formato de arquivo, tamanho do arquivo, etc.</p>
+                </div>
+              </details>
+            </div>
+          </details>
+          <details class="category">
+            <summary>Photocontrol <span class="badge">1 subcategoria</span></summary>
+            <div class="category-body">
+              <details class="item">
+                <summary>Reason of rejection photocontrol</summary>
+                <div class="description">
+                  <p>Dúvidas relacionadas ao motivo da rejeição controle por foto</p>
+                </div>
+              </details>
+            </div>
+          </details>
+          <details class="category">
+            <summary>Change/add the vertical <span class="badge">3 subcategorias</span></summary>
+            <div class="category-body">
+              <details class="item">
+                <summary>City rides to Courier</summary>
+                <div class="description">
+                  <p>Solicitação para adicionar a vertical &#x27;Entregador&#x27; ou mudar da vertical Cidade para a vertical Entregador</p>
+                </div>
+              </details>
+              <details class="item">
+                <summary>Add Intercity</summary>
+                <div class="description">
+                  <p>Solicitação para adicionar transporte interurbano</p>
+                </div>
+              </details>
+              <details class="item">
+                <summary>Add Cargo</summary>
+                <div class="description">
+                  <p>Solicitação para adicionar frete</p>
+                </div>
+              </details>
+            </div>
+          </details>
+        </div>
+      </details>
+      <details class="topic" data-search="account payment &amp; billing blocking profile cashless branding comfort driver loyalty bonuses top up issue available balance full withdrawal invoice request history request antifraud other manual ban profile deletion profile restoring blocking edit number edit photo edit name remove/edit review rating priority did not get the payout can not add bank account can not delete the bank account branding request did not receive payment comfort status disappeared platinum or legend features not transferred to platinium or legend lost platinum or legend status bonus disappeared do x get y eligibilty didn&#x27;t receive a bonus bonus consultation problema com recarga de saldo solicitações sobre saldo disponível, saldo incorreto, contas misturadas, saldo negativo e reclamações sobre valores incorretos na conta (exceto problemas com recargas — use a etiqueta &quot;problema com recarga&quot; para esses casos). solicitação de saque total dos saldos da conta. deve ser utilizada exclusivamente para solicitações de documentos consolidados de um período específico.
+exemplos: informe de rendimentos anual/mensal e relatórios gerais de corridas. deve ser utilizada quando o motorista solicita informações sobre uma viagem específica ou detalhes do histórico de uma determinada corrida. o usuário entra em contato com o suporte em relação ao motivo do bloqueio antifraude da conta e deve selecionar a opção com base no motivo do bloqueio no cherdak. o usuário entra em contato com o suporte a respeito do bloqueio da conta. todos os bloqueios não relacionados a medidas antifraude ou banimentos manuais devem estar listados, como por exemplo: segurança, bloqueios interurbanos, etc. o usuário entrou em contato com o suporte a respeito do bloqueio da conta. para adicionar essa tag, o banimento deve ser feito manualmente com a seguinte justificativa: banimento manual. solicitação de exclusão de conta solicitação de restauração de conta solicitação sobre o motivo do bloqueio da conta solicitação para editar o número de telefone pedido de edição de foto solicitação para editar o nome do perfil solicitar a exclusão ou edição de uma avaliação. solicitações relacionadas à classificação solicitações relacionadas à prioridade reclamação de que o pagamento por uma corrida cashless não foi recebido na conta bancária (após retirada da carteira) reclamação sobre a impossibilidade de adicionar uma conta bancária para receber pagamentos em cashless não foi possível remover a conta bancária para cashless consulta sobre personalização de marca. o motorista deseja adesivar seu veículo com sua marca e/ou descobrir quais vantagens isso oferece. reclamação sobre motorista não ter recebido pagamento pela adesivação da empresa. a reclamação sobre o motorista resultou na perda do status &quot;conforto&quot;. consulta sobre os benefícios do status platinum ou legend solicitação/reclamação sobre motorista não promovido ao status platinum/consulta sobre o motivo da recusa da promoção ao status platinum reclamação de que o motorista teve seu status platinum ou legend revogado. solicite ao motorista que relate o desaparecimento ou a ausência do bônus. uma consulta em que o motorista pergunta se tem direito a um bônus específico ao cumprir uma condição (x → y). uma solicitação feita quando um motorista relata que não recebeu o bônus esperado. solicitação de consultoria sobre bônus ou dúvidas sobre seu acúmulo.">
+        <summary>Account <span class="badge">8 categorias · 30 subcategorias</span></summary>
+        <div class="topic-body">
+          <details class="category">
+            <summary>Payment &amp; billing <span class="badge">5 subcategorias</span></summary>
+            <div class="category-body">
+              <details class="item">
+                <summary>Top up issue</summary>
+                <div class="description">
+                  <p>Problema com recarga de saldo</p>
+                </div>
+              </details>
+              <details class="item">
+                <summary>Available balance</summary>
+                <div class="description">
+                  <p>Solicitações sobre saldo disponível, saldo incorreto, contas misturadas, saldo negativo e reclamações sobre valores incorretos na conta (exceto problemas com recargas — use a etiqueta &quot;Problema com recarga&quot; para esses casos).</p>
+                </div>
+              </details>
+              <details class="item">
+                <summary>Full withdrawal</summary>
+                <div class="description">
+                  <p>Solicitação de saque total dos saldos da conta.</p>
+                </div>
+              </details>
+              <details class="item">
+                <summary>Invoice request</summary>
+                <div class="description">
+                  <p>Deve ser utilizada exclusivamente para solicitações de documentos consolidados de um período específico.
+Exemplos: Informe de rendimentos anual/mensal e relatórios gerais de corridas.</p>
+                </div>
+              </details>
+              <details class="item">
+                <summary>History request</summary>
+                <div class="description">
+                  <p>Deve ser utilizada quando o motorista solicita informações sobre uma viagem específica ou detalhes do histórico de uma determinada corrida.</p>
+                </div>
+              </details>
+            </div>
+          </details>
+          <details class="category">
+            <summary>Blocking <span class="badge">3 subcategorias</span></summary>
+            <div class="category-body">
+              <details class="item">
+                <summary>Antifraud</summary>
+                <div class="description">
+                  <p>O usuário entra em contato com o suporte em relação ao motivo do bloqueio antifraude da conta e deve selecionar a opção com base no motivo do bloqueio no Cherdak.</p>
+                </div>
+              </details>
+              <details class="item">
+                <summary>Other</summary>
+                <div class="description">
+                  <p>O usuário entra em contato com o suporte a respeito do bloqueio da conta. Todos os bloqueios não relacionados a medidas antifraude ou banimentos manuais devem estar listados, como por exemplo: segurança, bloqueios interurbanos, etc.</p>
+                </div>
+              </details>
+              <details class="item">
+                <summary>Manual ban</summary>
+                <div class="description">
+                  <p>O usuário entrou em contato com o suporte a respeito do bloqueio da conta. Para adicionar essa tag, o banimento deve ser feito manualmente com a seguinte justificativa: banimento manual.</p>
+                </div>
+              </details>
+            </div>
+          </details>
+          <details class="category">
+            <summary>Profile <span class="badge">9 subcategorias</span></summary>
+            <div class="category-body">
+              <details class="item">
+                <summary>Profile deletion</summary>
+                <div class="description">
+                  <p>Solicitação de exclusão de conta</p>
+                </div>
+              </details>
+              <details class="item">
+                <summary>Profile restoring</summary>
+                <div class="description">
+                  <p>Solicitação de restauração de conta</p>
+                </div>
+              </details>
+              <details class="item">
+                <summary>Blocking</summary>
+                <div class="description">
+                  <p>Solicitação sobre o motivo do bloqueio da conta</p>
+                </div>
+              </details>
+              <details class="item">
+                <summary>Edit number</summary>
+                <div class="description">
+                  <p>Solicitação para editar o número de telefone</p>
+                </div>
+              </details>
+              <details class="item">
+                <summary>Edit photo</summary>
+                <div class="description">
+                  <p>Pedido de edição de foto</p>
+                </div>
+              </details>
+              <details class="item">
+                <summary>Edit name</summary>
+                <div class="description">
+                  <p>Solicitação para editar o nome do perfil</p>
+                </div>
+              </details>
+              <details class="item">
+                <summary>Remove/edit review</summary>
+                <div class="description">
+                  <p>Solicitar a exclusão ou edição de uma avaliação.</p>
+                </div>
+              </details>
+              <details class="item">
+                <summary>Rating</summary>
+                <div class="description">
+                  <p>Solicitações relacionadas à classificação</p>
+                </div>
+              </details>
+              <details class="item">
+                <summary>Priority</summary>
+                <div class="description">
+                  <p>Solicitações relacionadas à prioridade</p>
+                </div>
+              </details>
+            </div>
+          </details>
+          <details class="category">
+            <summary>Cashless <span class="badge">3 subcategorias</span></summary>
+            <div class="category-body">
+              <details class="item">
+                <summary>Did not get the payout</summary>
+                <div class="description">
+                  <p>Reclamação de que o pagamento por uma corrida Cashless não foi recebido na conta bancária (após retirada da carteira)</p>
+                </div>
+              </details>
+              <details class="item">
+                <summary>Can not add bank account</summary>
+                <div class="description">
+                  <p>Reclamação sobre a impossibilidade de adicionar uma conta bancária para receber pagamentos em Cashless</p>
+                </div>
+              </details>
+              <details class="item">
+                <summary>Can not delete the bank account</summary>
+                <div class="description">
+                  <p>Não foi possível remover a conta bancária para Cashless</p>
+                </div>
+              </details>
+            </div>
+          </details>
+          <details class="category">
+            <summary>Branding <span class="badge">2 subcategorias</span></summary>
+            <div class="category-body">
+              <details class="item">
+                <summary>Branding request</summary>
+                <div class="description">
+                  <p>Consulta sobre personalização de marca. O motorista deseja adesivar seu veículo com sua marca e/ou descobrir quais vantagens isso oferece.</p>
+                </div>
+              </details>
+              <details class="item">
+                <summary>Did not receive payment</summary>
+                <div class="description">
+                  <p>Reclamação sobre motorista não ter recebido pagamento pela adesivação da empresa.</p>
+                </div>
+              </details>
+            </div>
+          </details>
+          <details class="category">
+            <summary>Comfort <span class="badge">1 subcategoria</span></summary>
+            <div class="category-body">
+              <details class="item">
+                <summary>Comfort status disappeared</summary>
+                <div class="description">
+                  <p>A reclamação sobre o motorista resultou na perda do status &quot;Conforto&quot;.</p>
+                </div>
+              </details>
+            </div>
+          </details>
+          <details class="category">
+            <summary>Driver Loyalty <span class="badge">3 subcategorias</span></summary>
+            <div class="category-body">
+              <details class="item">
+                <summary>Platinum or Legend features</summary>
+                <div class="description">
+                  <p>Consulta sobre os benefícios do status Platinum ou legend</p>
+                </div>
+              </details>
+              <details class="item">
+                <summary>Not transferred to Platinium or Legend</summary>
+                <div class="description">
+                  <p>Solicitação/Reclamação sobre motorista não promovido ao status Platinum/Consulta sobre o motivo da recusa da promoção ao status Platinum</p>
+                </div>
+              </details>
+              <details class="item">
+                <summary>Lost Platinum or Legend status</summary>
+                <div class="description">
+                  <p>Reclamação de que o motorista teve seu status Platinum ou Legend revogado.</p>
+                </div>
+              </details>
+            </div>
+          </details>
+          <details class="category">
+            <summary>Bonuses <span class="badge">4 subcategorias</span></summary>
+            <div class="category-body">
+              <details class="item">
+                <summary>Bonus disappeared</summary>
+                <div class="description">
+                  <p>Solicite ao motorista que relate o desaparecimento ou a ausência do bônus.</p>
+                </div>
+              </details>
+              <details class="item">
+                <summary>Do X get Y eligibilty</summary>
+                <div class="description">
+                  <p>Uma consulta em que o motorista pergunta se tem direito a um bônus específico ao cumprir uma condição (X → Y).</p>
+                </div>
+              </details>
+              <details class="item">
+                <summary>Didn&#x27;t receive a bonus</summary>
+                <div class="description">
+                  <p>Uma solicitação feita quando um motorista relata que não recebeu o bônus esperado.</p>
+                </div>
+              </details>
+              <details class="item">
+                <summary>Bonus consultation</summary>
+                <div class="description">
+                  <p>Solicitação de consultoria sobre bônus ou dúvidas sobre seu acúmulo.</p>
+                </div>
+              </details>
+            </div>
+          </details>
+        </div>
+      </details>
+      <details class="topic" data-search="information general info work with order how to work with order app settings verification tutorial account managements cashless comfort how indrive app works where indrive app works how to refer a friend how to become a driver insurance details promo questions how service fee works demand map cancellation rules how to accept an order how to add multiple stops how to change the order how to contact a passenger how to change settings how to upload documents how to add the second car required documents for driver how to top up an account fleet-taxi consultation comfort requerments comfort photocontrol requirements dúvidas sobre como funciona o aplicativo indrive. solicite informações sobre a disponibilidade do indrive em determinadas regiões ou cidades. como convidar um amigo para o indrive? informações sobre como se tornar motorista o cliente faz perguntas sobre a disponibilidade e os termos do seguro. solicitação do usuário sobre promoções, códigos promocionais ou ofertas especiais. o usuário está perguntando sobre as regras gerais da taxa de serviço, incluindo o valor e a forma de cobrança. solicitação do usuário sobre o recurso &quot;mapa de demanda&quot; o usuário está perguntando sobre as regras gerais de cancelamento — como cancelar um pedido corretamente e em quais casos será cobrada uma taxa de serviço ou não. instruções ou explicações passo a passo para o usuário sobre como aceitar um pedido. explicação para o usuário sobre como adicionar várias paradas a uma viagem. instruções para o usuário sobre como alterar um pedido ou os detalhes da viagem. instruções para o usuário sobre como contatar o passageiro. solicitação do usuário sobre como alterar as configurações do aplicativo. instruções para o usuário sobre como enviar documentos para o aplicativo. solicitação sobre como adicionar um segundo carro solicite informações sobre os documentos necessários para um motorista. uma solicitação sobre como recarregar a conta. solicitar informações sobre como trabalhar com um táxi ou conectar-se a uma frota de táxis. o usuário deseja mais informações sobre pedidos com pagamento por cartão. solicitação referente aos requisitos para pedidos em status comfort. solicitações relacionadas aos requisitos de fotocontrole para a tarifa comfort.">
+        <summary>Information <span class="badge">8 categorias · 22 subcategorias</span></summary>
+        <div class="topic-body">
+          <details class="category">
+            <summary>General info <span class="badge">8 subcategorias</span></summary>
+            <div class="category-body">
+              <details class="item">
+                <summary>How inDrive app works</summary>
+                <div class="description">
+                  <p>Dúvidas sobre como funciona o aplicativo inDrive.</p>
+                </div>
+              </details>
+              <details class="item">
+                <summary>Where inDrive app works</summary>
+                <div class="description">
+                  <p>Solicite informações sobre a disponibilidade do inDrive em determinadas regiões ou cidades.</p>
+                </div>
+              </details>
+              <details class="item">
+                <summary>How to refer a friend</summary>
+                <div class="description">
+                  <p>Como convidar um amigo para o inDrive?</p>
+                </div>
+              </details>
+              <details class="item">
+                <summary>How to become a driver</summary>
+                <div class="description">
+                  <p>Informações sobre como se tornar motorista</p>
+                </div>
+              </details>
+              <details class="item">
+                <summary>Insurance details</summary>
+                <div class="description">
+                  <p>O cliente faz perguntas sobre a disponibilidade e os termos do seguro.</p>
+                </div>
+              </details>
+              <details class="item">
+                <summary>Promo questions</summary>
+                <div class="description">
+                  <p>Solicitação do usuário sobre promoções, códigos promocionais ou ofertas especiais.</p>
+                </div>
+              </details>
+              <details class="item">
+                <summary>How service fee works</summary>
+                <div class="description">
+                  <p>O usuário está perguntando sobre as regras gerais da taxa de serviço, incluindo o valor e a forma de cobrança.</p>
+                </div>
+              </details>
+              <details class="item">
+                <summary>Demand map</summary>
+                <div class="description">
+                  <p>Solicitação do usuário sobre o recurso &quot;Mapa de Demanda&quot;</p>
+                </div>
+              </details>
+            </div>
+          </details>
+          <details class="category">
+            <summary>Work with order <span class="badge">1 subcategoria</span></summary>
+            <div class="category-body">
+              <details class="item">
+                <summary>Cancellation rules</summary>
+                <div class="description">
+                  <p>O usuário está perguntando sobre as regras gerais de cancelamento — como cancelar um pedido corretamente e em quais casos será cobrada uma taxa de serviço ou não.</p>
+                </div>
+              </details>
+            </div>
+          </details>
+          <details class="category">
+            <summary>How to work with order <span class="badge">4 subcategorias</span></summary>
+            <div class="category-body">
+              <details class="item">
+                <summary>How to accept an order</summary>
+                <div class="description">
+                  <p>Instruções ou explicações passo a passo para o usuário sobre como aceitar um pedido.</p>
+                </div>
+              </details>
+              <details class="item">
+                <summary>How to add multiple stops</summary>
+                <div class="description">
+                  <p>Explicação para o usuário sobre como adicionar várias paradas a uma viagem.</p>
+                </div>
+              </details>
+              <details class="item">
+                <summary>How to change the order</summary>
+                <div class="description">
+                  <p>Instruções para o usuário sobre como alterar um pedido ou os detalhes da viagem.</p>
+                </div>
+              </details>
+              <details class="item">
+                <summary>How to contact a passenger</summary>
+                <div class="description">
+                  <p>Instruções para o usuário sobre como contatar o passageiro.</p>
+                </div>
+              </details>
+            </div>
+          </details>
+          <details class="category">
+            <summary>App settings <span class="badge">1 subcategoria</span></summary>
+            <div class="category-body">
+              <details class="item">
+                <summary>How to change settings</summary>
+                <div class="description">
+                  <p>Solicitação do usuário sobre como alterar as configurações do aplicativo.</p>
+                </div>
+              </details>
+            </div>
+          </details>
+          <details class="category">
+            <summary>Verification tutorial <span class="badge">3 subcategorias</span></summary>
+            <div class="category-body">
+              <details class="item">
+                <summary>How to upload documents</summary>
+                <div class="description">
+                  <p>Instruções para o usuário sobre como enviar documentos para o aplicativo.</p>
+                </div>
+              </details>
+              <details class="item">
+                <summary>How to add the second car</summary>
+                <div class="description">
+                  <p>Solicitação sobre como adicionar um segundo carro</p>
+                </div>
+              </details>
+              <details class="item">
+                <summary>Required documents for Driver</summary>
+                <div class="description">
+                  <p>Solicite informações sobre os documentos necessários para um motorista.</p>
+                </div>
+              </details>
+            </div>
+          </details>
+          <details class="category">
+            <summary>Account managements <span class="badge">2 subcategorias</span></summary>
+            <div class="category-body">
+              <details class="item">
+                <summary>How to top up an account</summary>
+                <div class="description">
+                  <p>Uma solicitação sobre como recarregar a conta.</p>
+                </div>
+              </details>
+              <details class="item">
+                <summary>Fleet-Taxi</summary>
+                <div class="description">
+                  <p>Solicitar informações sobre como trabalhar com um táxi ou conectar-se a uma frota de táxis.</p>
+                </div>
+              </details>
+            </div>
+          </details>
+          <details class="category">
+            <summary>Cashless <span class="badge">1 subcategoria</span></summary>
+            <div class="category-body">
+              <details class="item">
+                <summary>Consultation</summary>
+                <div class="description">
+                  <p>O usuário deseja mais informações sobre pedidos com pagamento por cartão.</p>
+                </div>
+              </details>
+            </div>
+          </details>
+          <details class="category">
+            <summary>Comfort <span class="badge">2 subcategorias</span></summary>
+            <div class="category-body">
+              <details class="item">
+                <summary>Comfort requerments</summary>
+                <div class="description">
+                  <p>Solicitação referente aos requisitos para pedidos em status Comfort.</p>
+                </div>
+              </details>
+              <details class="item">
+                <summary>Comfort Photocontrol requirements</summary>
+                <div class="description">
+                  <p>Solicitações relacionadas aos requisitos de fotocontrole para a tarifa Comfort.</p>
+                </div>
+              </details>
+            </div>
+          </details>
+        </div>
+      </details>
+      <details class="topic" data-search="tech issues profile order finance general/other login issues - - - o usuário não consegue fazer login em seu perfil devido a um problema técnico. consulta sobre um erro em um pedido. solicitação referente a um erro financeiro. solicitação referente a um erro conhecido que não se enquadra nas categorias existentes.">
+        <summary>Tech issues <span class="badge">4 categorias · 4 subcategorias</span></summary>
+        <div class="topic-body">
+          <details class="category">
+            <summary>Profile <span class="badge">1 subcategoria</span></summary>
+            <div class="category-body">
+              <details class="item">
+                <summary>Login Issues</summary>
+                <div class="description">
+                  <p>O usuário não consegue fazer login em seu perfil devido a um problema técnico.</p>
+                </div>
+              </details>
+            </div>
+          </details>
+          <details class="category">
+            <summary>Order <span class="badge">1 subcategoria</span></summary>
+            <div class="category-body">
+              <details class="item">
+                <summary>-</summary>
+                <div class="description">
+                  <p>Consulta sobre um erro em um pedido.</p>
+                </div>
+              </details>
+            </div>
+          </details>
+          <details class="category">
+            <summary>Finance <span class="badge">1 subcategoria</span></summary>
+            <div class="category-body">
+              <details class="item">
+                <summary>-</summary>
+                <div class="description">
+                  <p>Solicitação referente a um erro financeiro.</p>
+                </div>
+              </details>
+            </div>
+          </details>
+          <details class="category">
+            <summary>General/other <span class="badge">1 subcategoria</span></summary>
+            <div class="category-body">
+              <details class="item">
+                <summary>-</summary>
+                <div class="description">
+                  <p>Solicitação referente a um erro conhecido que não se enquadra nas categorias existentes.</p>
+                </div>
+              </details>
+            </div>
+          </details>
+        </div>
+      </details>
+      <details class="topic" data-search="feedback about service &amp; app service customer support abusive users no orders dissatisfaction with the service low prices autoclickers&amp;bots from other drivers service fee increase info about push suggestion gratitude to cs complaints about cs resolved issue with issue no issue reclamações sobre a ausência de pedidos insatisfação geral com o serviço indrive, sem detalhes específicos. solicitação com reclamação sobre tarifas ou preços baixos. solicitação referente a outros motoristas que utilizam autoclickers ou bots para obter vantagem no recebimento de pedidos. reclamação sobre aumento da taxa de serviço usuário pergunta sobre mensagem push do indrive faça uma solicitação com uma sugestão para melhorar o serviço ou aplicativo. solicitação expressando gratidão pelo serviço ou pelo desempenho do aplicativo. consulta com reclamação sobre o serviço de suporte confirmação de que o problema foi resolvido. quando o usuário é abusivo, mas tem uma questão ou problema válido relacionado à sua experiência. quando o usuário se comporta de forma abusiva sem apresentar qualquer problema real (por exemplo, contatar o suporte apenas para proferir insultos pessoais aos agentes).">
+        <summary>Feedback about service &amp; app <span class="badge">3 categorias · 12 subcategorias</span></summary>
+        <div class="topic-body">
+          <details class="category">
+            <summary>Service <span class="badge">7 subcategorias</span></summary>
+            <div class="category-body">
+              <details class="item">
+                <summary>No orders</summary>
+                <div class="description">
+                  <p>Reclamações sobre a ausência de pedidos</p>
+                </div>
+              </details>
+              <details class="item">
+                <summary>Dissatisfaction with the service</summary>
+                <div class="description">
+                  <p>Insatisfação geral com o serviço inDrive, sem detalhes específicos.</p>
+                </div>
+              </details>
+              <details class="item">
+                <summary>Low prices</summary>
+                <div class="description">
+                  <p>Solicitação com reclamação sobre tarifas ou preços baixos.</p>
+                </div>
+              </details>
+              <details class="item">
+                <summary>Autoclickers&amp;bots from other drivers</summary>
+                <div class="description">
+                  <p>Solicitação referente a outros motoristas que utilizam autoclickers ou bots para obter vantagem no recebimento de pedidos.</p>
+                </div>
+              </details>
+              <details class="item">
+                <summary>Service fee increase</summary>
+                <div class="description">
+                  <p>Reclamação sobre aumento da taxa de serviço</p>
+                </div>
+              </details>
+              <details class="item">
+                <summary>Info about push</summary>
+                <div class="description">
+                  <p>Usuário pergunta sobre mensagem push do InDrive</p>
+                </div>
+              </details>
+              <details class="item">
+                <summary>Suggestion</summary>
+                <div class="description">
+                  <p>Faça uma solicitação com uma sugestão para melhorar o serviço ou aplicativo.</p>
+                </div>
+              </details>
+            </div>
+          </details>
+          <details class="category">
+            <summary>Customer support <span class="badge">3 subcategorias</span></summary>
+            <div class="category-body">
+              <details class="item">
+                <summary>Gratitude to CS</summary>
+                <div class="description">
+                  <p>Solicitação expressando gratidão pelo serviço ou pelo desempenho do aplicativo.</p>
+                </div>
+              </details>
+              <details class="item">
+                <summary>Complaints about CS</summary>
+                <div class="description">
+                  <p>Consulta com reclamação sobre o serviço de suporte</p>
+                </div>
+              </details>
+              <details class="item">
+                <summary>Resolved issue</summary>
+                <div class="description">
+                  <p>Confirmação de que o problema foi resolvido.</p>
+                </div>
+              </details>
+            </div>
+          </details>
+          <details class="category">
+            <summary>Abusive Users <span class="badge">2 subcategorias</span></summary>
+            <div class="category-body">
+              <details class="item">
+                <summary>With Issue</summary>
+                <div class="description">
+                  <p>Quando o usuário é abusivo, mas tem uma questão ou problema válido relacionado à sua experiência.</p>
+                </div>
+              </details>
+              <details class="item">
+                <summary>No Issue</summary>
+                <div class="description">
+                  <p>Quando o usuário se comporta de forma abusiva sem apresentar qualquer problema real (por exemplo, contatar o suporte apenas para proferir insultos pessoais aos agentes).</p>
+                </div>
+              </details>
+            </div>
+          </details>
+        </div>
+      </details>
+      <details class="topic" data-search="legal issues government request emloyment related requests police request other goverment requests info about self-employed mx labor law reform tax consultation driver got fine solicitação relacionada a uma solicitação oficial da polícia solicitação relacionada a pedidos oficiais de órgãos governamentais, exceto a polícia solicitação de consulta ou informação para motoristas sobre questões relacionadas a empreendedorismo individual, regime tributário especial ou pequenas empresas. pedido de reforma legislativa no méxico solicitação relacionada a impostos o motorista está relatando que recebeu uma multa">
+        <summary>Legal issues <span class="badge">2 categorias · 6 subcategorias</span></summary>
+        <div class="topic-body">
+          <details class="category">
+            <summary>Government request <span class="badge">2 subcategorias</span></summary>
+            <div class="category-body">
+              <details class="item">
+                <summary>Police request</summary>
+                <div class="description">
+                  <p>Solicitação relacionada a uma solicitação oficial da polícia</p>
+                </div>
+              </details>
+              <details class="item">
+                <summary>Other goverment requests</summary>
+                <div class="description">
+                  <p>Solicitação relacionada a pedidos oficiais de órgãos governamentais, exceto a polícia</p>
+                </div>
+              </details>
+            </div>
+          </details>
+          <details class="category">
+            <summary>Emloyment related requests <span class="badge">4 subcategorias</span></summary>
+            <div class="category-body">
+              <details class="item">
+                <summary>Info about Self-Employed</summary>
+                <div class="description">
+                  <p>Solicitação de consulta ou informação para motoristas sobre questões relacionadas a empreendedorismo individual, regime tributário especial ou pequenas empresas.</p>
+                </div>
+              </details>
+              <details class="item">
+                <summary>MX labor law reform</summary>
+                <div class="description">
+                  <p>Pedido de reforma legislativa no México</p>
+                </div>
+              </details>
+              <details class="item">
+                <summary>Tax consultation</summary>
+                <div class="description">
+                  <p>Solicitação relacionada a impostos</p>
+                </div>
+              </details>
+              <details class="item">
+                <summary>Driver got fine</summary>
+                <div class="description">
+                  <p>O motorista está relatando que recebeu uma multa</p>
+                </div>
+              </details>
+            </div>
+          </details>
+        </div>
+      </details>
+      <details class="topic" data-search="order related issues service fee refund financial issues passenger behavior lost &amp; found waiting on hold out of hold sla auto-refund completed manual refund duplicate deduction passenger paid more than price cashless: double payment cashless: did not get money after the ride positive feedback found lost reembolso - em espera, ainda não se passaram 8 horas. reembolso -  manter por mais de 8 horas o reembolso automático do pedido já foi efetuado. solicitações que exigem reembolso manual pedido de reembolso - cobrança duplicada solicitação referente a um passageiro que pagou um valor superior ao custo da viagem estipulado motorista solicita pagamento em dobro em uma viagem sem dinheiro em espécie. motorista reclama de não ter recebido pagamento cashless após a viagem feedback positivo sobre o passageiro solicitação do motorista sobre a localização dos pertences de um passageiro após uma viagem. solicitação referente a itens perdidos durante uma viagem - passageiro pegou acidentalmente um item do motorista (isqueiro, carregador, etc.)">
+        <summary>Order related issues <span class="badge">4 categorias · 11 subcategorias</span></summary>
+        <div class="topic-body">
+          <details class="category">
+            <summary>Service fee refund <span class="badge">5 subcategorias</span></summary>
+            <div class="category-body">
+              <details class="item">
+                <summary>Waiting on hold</summary>
+                <div class="description">
+                  <p>Reembolso - Em espera, ainda não se passaram 8 horas.</p>
+                </div>
+              </details>
+              <details class="item">
+                <summary>Out of Hold SLA</summary>
+                <div class="description">
+                  <p>Reembolso -  Manter por mais de 8 horas</p>
+                </div>
+              </details>
+              <details class="item">
+                <summary>Auto-Refund completed</summary>
+                <div class="description">
+                  <p>O reembolso automático do pedido já foi efetuado.</p>
+                </div>
+              </details>
+              <details class="item">
+                <summary>Manual refund</summary>
+                <div class="description">
+                  <p>Solicitações que exigem reembolso manual</p>
+                </div>
+              </details>
+              <details class="item">
+                <summary>Duplicate deduction</summary>
+                <div class="description">
+                  <p>Pedido de reembolso - cobrança duplicada</p>
+                </div>
+              </details>
+            </div>
+          </details>
+          <details class="category">
+            <summary>Financial issues <span class="badge">3 subcategorias</span></summary>
+            <div class="category-body">
+              <details class="item">
+                <summary>Passenger paid more than price</summary>
+                <div class="description">
+                  <p>Solicitação referente a um passageiro que pagou um valor superior ao custo da viagem estipulado</p>
+                </div>
+              </details>
+              <details class="item">
+                <summary>Cashless: double payment</summary>
+                <div class="description">
+                  <p>Motorista solicita pagamento em dobro em uma viagem sem dinheiro em espécie.</p>
+                </div>
+              </details>
+              <details class="item">
+                <summary>Cashless: did not get money after the ride</summary>
+                <div class="description">
+                  <p>Motorista reclama de não ter recebido pagamento cashless após a viagem</p>
+                </div>
+              </details>
+            </div>
+          </details>
+          <details class="category">
+            <summary>Passenger behavior <span class="badge">1 subcategoria</span></summary>
+            <div class="category-body">
+              <details class="item">
+                <summary>Positive feedback</summary>
+                <div class="description">
+                  <p>Feedback positivo sobre o passageiro</p>
+                </div>
+              </details>
+            </div>
+          </details>
+          <details class="category">
+            <summary>Lost &amp; found <span class="badge">2 subcategorias</span></summary>
+            <div class="category-body">
+              <details class="item">
+                <summary>Found</summary>
+                <div class="description">
+                  <p>Solicitação do motorista sobre a localização dos pertences de um passageiro após uma viagem.</p>
+                </div>
+              </details>
+              <details class="item">
+                <summary>Lost</summary>
+                <div class="description">
+                  <p>Solicitação referente a itens perdidos durante uma viagem - passageiro pegou acidentalmente um item do motorista (isqueiro, carregador, etc.)</p>
+                </div>
+              </details>
+            </div>
+          </details>
+        </div>
+      </details>
+      <details class="topic" data-search="safety online incidents road and driving safety verbal and physical conflicts sexual misconduct and harassment robbery and carjacking theft scam kidnapping and missing persons legal violations fatal incidents insults or threats in the app sexting and sex related offers breach of confidential data dangerous driving road accident drop off in unsafe conditions discrimination verbal insults or threats conflicts about payment extortion stalking physical aggression or fighting intentional damage to property unwanted flirting sex related offers or inappropriate comments inappropriate behavior without physical contact inappropriate physical contact rape attempts rape robbery attempt robbery carjacking property theft left items nondelivery payment scams branding and reputation fake ride orders with legal consequences driver changes the route kidnapping report of a missing person driver doesn&#x27;t have the license or documents drugs and weapons in the vehicle drunk or drugged driver natural death fatal road accident murder  tentativas de iniciar um relacionamento romântico por mensagem de texto ou chamada telefônica, sem insultos ou conteúdo sexual. mensagens, fotos ou vídeos de conteúdo sexual, ou ofertas de serviços sexuais por mensagem de texto ou chamada telefônica. compartilhamento de vídeos, fotos ou informações da conta de usuários por meio de canais externos sem o consentimento deles. relatos de direção imprudente ou insegura que coloque em risco passageiros, motoristas ou outras pessoas na estrada.  o motorista não completa a viagem com o passageiro a bordo — por exemplo, abandona o passageiro durante a noite na estrada. denúncias de tratamento injusto com base em raça, gênero, idade, religião ou outras características pessoais conflitos entre usuários envolvendo insultos ou ameaças – passageiro se recusa a pagar a corrida
+– motorista alega que o passageiro pagou menos do que o combinado
+– quaisquer outras disputas de pagamento 
+inclui casos em que um motorista tranca o passageiro dentro do carro para receber o pagamento situações em que um motorista ou passageiro é forçado a fazer um pagamento por causa de intimidação, ameaças contra ele ou sua família, ou violência. inclui casos envolvendo grupos organizados e cartéis. seguir ou monitorar um motorista ou passageiro. inclui casos como aparecer perto de sua casa, local de trabalho ou outros locais; tirar fotos ou vídeos sem o seu consentimento relatórios de agressões físicas, empurrões ou outros confrontos físicos entre usuários denúncias de danos à propriedade de terceiros (apenas para casos virais) tentativas de iniciar um relacionamento romântico, sem insultos ou conteúdo sexual – propostas de relacionamento romântico, geralmente de natureza sexual
+– comentários sobre a aparência da outra pessoa, partes do corpo; quaisquer outros comentários relacionados a sexo masturbação, ficar nu, assistir pornografia na presença de outra pessoa qualquer tipo de toque inapropriado (apalpamento) direcionado a outra pessoa tentativas de agressão sexual ou estupro atos de agressão sexual ou estupro tentativas de roubo a outra pessoa — envolvendo força, intimidação ou ameaças de violência crime em que dinheiro ou pertences são tomados mediante força, ameaças ou intimidação furto de veículo para fins como roubo, vandalismo, prática de outro crime ou outro uso ilegal denúncias de motorista que furta pertences de passageiros — ou vice-versa denúncias de motorista que não devolve itens esquecidos por um passageiro (em casos de grande repercussão) para a cei — intermunicipal (em outras regiões, esses casos são tratados pela 1ª instância) – entregador que recebe o pagamento tanto do remetente quanto do destinatário
+– cliente que pede a um motorista/entregador para comprar algo e depois não devolve o dinheiro
+– qualquer pessoa que use notas falsas prestar serviços ou realizar atividades apresentando-os falsamente como sendo afiliados à indrive – pedidos falsos da polícia / outras autoridades governamentais (incluindo casos com agentes infiltrados), que podem resultar em multas, detenções, prisões e outras consequências
+– postos de controlo e bloqueios organizados com o objetivo de capturar motoristas
+– multas ou penalidades oficiais por usar o serviço em áreas restritas ou participar em atividades de transporte ilegal passageiro relata que a rota foi alterada e parece um sequestro passageiro relata que o motorista está o sequestrando — ou vice-versa alguém nos notifica que não consegue encontrar o passageiro ou o motorista (por exemplo, o relato vem de parentes, amigos, colegas) reclamações sobre motoristas que operam sem licença válida ou documentos necessários incidentes em que um passageiro ou motorista transporta, solicita ou consome drogas ilegais no veículo dirigir sob a influência de álcool ou drogas morte por causas naturais ocorrida durante ou relacionada a um passeio morte em decorrência de acidente de trânsito durante o passeio homicídio doloso ocorrido durante ou relacionado a um passeio">
+        <summary>Safety <span class="badge">10 categorias · 37 subcategorias</span></summary>
+        <div class="topic-body">
+          <details class="category">
+            <summary>Online incidents <span class="badge">3 subcategorias</span></summary>
+            <div class="category-body">
+              <details class="item">
+                <summary>Insults or threats in the app</summary>
+                <div class="description">
+                  <p>Tentativas de iniciar um relacionamento romântico por mensagem de texto ou chamada telefônica, sem insultos ou conteúdo sexual.</p>
+                </div>
+              </details>
+              <details class="item">
+                <summary>Sexting and sex related offers</summary>
+                <div class="description">
+                  <p>Mensagens, fotos ou vídeos de conteúdo sexual, ou ofertas de serviços sexuais por mensagem de texto ou chamada telefônica.</p>
+                </div>
+              </details>
+              <details class="item">
+                <summary>Breach of confidential data</summary>
+                <div class="description">
+                  <p>Compartilhamento de vídeos, fotos ou informações da conta de usuários por meio de canais externos sem o consentimento deles.</p>
+                </div>
+              </details>
+            </div>
+          </details>
+          <details class="category">
+            <summary>Road and driving safety <span class="badge">3 subcategorias</span></summary>
+            <div class="category-body">
+              <details class="item">
+                <summary>Dangerous driving</summary>
+                <div class="description">
+                  <p>Relatos de direção imprudente ou insegura que coloque em risco passageiros, motoristas ou outras pessoas na estrada.</p>
+                </div>
+              </details>
+              <details class="item">
+                <summary>Road accident</summary>
+                <div class="description">
+                  <p class="empty">Sem descrição no arquivo.</p>
+                </div>
+              </details>
+              <details class="item">
+                <summary>Drop off in unsafe conditions</summary>
+                <div class="description">
+                  <p>O motorista não completa a viagem com o passageiro a bordo — por exemplo, abandona o passageiro durante a noite na estrada.</p>
+                </div>
+              </details>
+            </div>
+          </details>
+          <details class="category">
+            <summary>Verbal and physical conflicts <span class="badge">7 subcategorias</span></summary>
+            <div class="category-body">
+              <details class="item">
+                <summary>Discrimination</summary>
+                <div class="description">
+                  <p>Denúncias de tratamento injusto com base em raça, gênero, idade, religião ou outras características pessoais</p>
+                </div>
+              </details>
+              <details class="item">
+                <summary>Verbal insults or threats</summary>
+                <div class="description">
+                  <p>Conflitos entre usuários envolvendo insultos ou ameaças</p>
+                </div>
+              </details>
+              <details class="item">
+                <summary>Conflicts about payment</summary>
+                <div class="description">
+                  <p>– Passageiro se recusa a pagar a corrida
+– Motorista alega que o passageiro pagou menos do que o combinado
+– Quaisquer outras disputas de pagamento 
+Inclui casos em que um motorista tranca o passageiro dentro do carro para receber o pagamento</p>
+                </div>
+              </details>
+              <details class="item">
+                <summary>Extortion</summary>
+                <div class="description">
+                  <p>Situações em que um motorista ou passageiro é forçado a fazer um pagamento por causa de intimidação, ameaças contra ele ou sua família, ou violência. Inclui casos envolvendo grupos organizados e cartéis.</p>
+                </div>
+              </details>
+              <details class="item">
+                <summary>Stalking</summary>
+                <div class="description">
+                  <p>Seguir ou monitorar um motorista ou passageiro. Inclui casos como aparecer perto de sua casa, local de trabalho ou outros locais; tirar fotos ou vídeos sem o seu consentimento</p>
+                </div>
+              </details>
+              <details class="item">
+                <summary>Physical aggression or fighting</summary>
+                <div class="description">
+                  <p>Relatórios de agressões físicas, empurrões ou outros confrontos físicos entre usuários</p>
+                </div>
+              </details>
+              <details class="item">
+                <summary>Intentional damage to property</summary>
+                <div class="description">
+                  <p>Denúncias de danos à propriedade de terceiros (apenas para casos virais)</p>
+                </div>
+              </details>
+            </div>
+          </details>
+          <details class="category">
+            <summary>Sexual misconduct and harassment <span class="badge">6 subcategorias</span></summary>
+            <div class="category-body">
+              <details class="item">
+                <summary>Unwanted flirting</summary>
+                <div class="description">
+                  <p>Tentativas de iniciar um relacionamento romântico, sem insultos ou conteúdo sexual</p>
+                </div>
+              </details>
+              <details class="item">
+                <summary>Sex related offers or inappropriate comments</summary>
+                <div class="description">
+                  <p>– Propostas de relacionamento romântico, geralmente de natureza sexual
+– Comentários sobre a aparência da outra pessoa, partes do corpo; quaisquer outros comentários relacionados a sexo</p>
+                </div>
+              </details>
+              <details class="item">
+                <summary>Inappropriate behavior without physical contact</summary>
+                <div class="description">
+                  <p>Masturbação, ficar nu, assistir pornografia na presença de outra pessoa</p>
+                </div>
+              </details>
+              <details class="item">
+                <summary>Inappropriate physical contact</summary>
+                <div class="description">
+                  <p>Qualquer tipo de toque inapropriado (apalpamento) direcionado a outra pessoa</p>
+                </div>
+              </details>
+              <details class="item">
+                <summary>Rape attempts</summary>
+                <div class="description">
+                  <p>Tentativas de agressão sexual ou estupro</p>
+                </div>
+              </details>
+              <details class="item">
+                <summary>Rape</summary>
+                <div class="description">
+                  <p>Atos de agressão sexual ou estupro</p>
+                </div>
+              </details>
+            </div>
+          </details>
+          <details class="category">
+            <summary>Robbery and carjacking <span class="badge">3 subcategorias</span></summary>
+            <div class="category-body">
+              <details class="item">
+                <summary>Robbery attempt</summary>
+                <div class="description">
+                  <p>Tentativas de roubo a outra pessoa — envolvendo força, intimidação ou ameaças de violência</p>
+                </div>
+              </details>
+              <details class="item">
+                <summary>Robbery</summary>
+                <div class="description">
+                  <p>Crime em que dinheiro ou pertences são tomados mediante força, ameaças ou intimidação</p>
+                </div>
+              </details>
+              <details class="item">
+                <summary>Carjacking</summary>
+                <div class="description">
+                  <p>Furto de veículo para fins como roubo, vandalismo, prática de outro crime ou outro uso ilegal</p>
+                </div>
+              </details>
+            </div>
+          </details>
+          <details class="category">
+            <summary>Theft <span class="badge">3 subcategorias</span></summary>
+            <div class="category-body">
+              <details class="item">
+                <summary>Property theft</summary>
+                <div class="description">
+                  <p>Denúncias de motorista que furta pertences de passageiros — ou vice-versa</p>
+                </div>
+              </details>
+              <details class="item">
+                <summary>Left items</summary>
+                <div class="description">
+                  <p>Denúncias de motorista que não devolve itens esquecidos por um passageiro (em casos de grande repercussão)</p>
+                </div>
+              </details>
+              <details class="item">
+                <summary>Nondelivery</summary>
+                <div class="description">
+                  <p>Para a CEI — intermunicipal (em outras regiões, esses casos são tratados pela 1ª Instância)</p>
+                </div>
+              </details>
+            </div>
+          </details>
+          <details class="category">
+            <summary>Scam <span class="badge">3 subcategorias</span></summary>
+            <div class="category-body">
+              <details class="item">
+                <summary>Payment scams</summary>
+                <div class="description">
+                  <p>– Entregador que recebe o pagamento tanto do remetente quanto do destinatário
+– Cliente que pede a um motorista/entregador para comprar algo e depois não devolve o dinheiro
+– Qualquer pessoa que use notas falsas</p>
+                </div>
+              </details>
+              <details class="item">
+                <summary>Branding and reputation</summary>
+                <div class="description">
+                  <p>Prestar serviços ou realizar atividades apresentando-os falsamente como sendo afiliados à inDrive</p>
+                </div>
+              </details>
+              <details class="item">
+                <summary>Fake ride orders with legal consequences</summary>
+                <div class="description">
+                  <p>– Pedidos falsos da polícia / outras autoridades governamentais (incluindo casos com agentes infiltrados), que podem resultar em multas, detenções, prisões e outras consequências
+– Postos de controlo e bloqueios organizados com o objetivo de capturar motoristas
+– Multas ou penalidades oficiais por usar o serviço em áreas restritas ou participar em atividades de transporte ilegal</p>
+                </div>
+              </details>
+            </div>
+          </details>
+          <details class="category">
+            <summary>Kidnapping and missing persons <span class="badge">3 subcategorias</span></summary>
+            <div class="category-body">
+              <details class="item">
+                <summary>Driver changes the route</summary>
+                <div class="description">
+                  <p>Passageiro relata que a rota foi alterada e parece um sequestro</p>
+                </div>
+              </details>
+              <details class="item">
+                <summary>Kidnapping</summary>
+                <div class="description">
+                  <p>Passageiro relata que o motorista está o sequestrando — ou vice-versa</p>
+                </div>
+              </details>
+              <details class="item">
+                <summary>Report of a missing person</summary>
+                <div class="description">
+                  <p>Alguém nos notifica que não consegue encontrar o passageiro ou o motorista (por exemplo, o relato vem de parentes, amigos, colegas)</p>
+                </div>
+              </details>
+            </div>
+          </details>
+          <details class="category">
+            <summary>Legal violations <span class="badge">3 subcategorias</span></summary>
+            <div class="category-body">
+              <details class="item">
+                <summary>Driver doesn&#x27;t have the license or documents</summary>
+                <div class="description">
+                  <p>Reclamações sobre motoristas que operam sem licença válida ou documentos necessários</p>
+                </div>
+              </details>
+              <details class="item">
+                <summary>Drugs and weapons in the vehicle</summary>
+                <div class="description">
+                  <p>Incidentes em que um passageiro ou motorista transporta, solicita ou consome drogas ilegais no veículo</p>
+                </div>
+              </details>
+              <details class="item">
+                <summary>Drunk or drugged driver</summary>
+                <div class="description">
+                  <p>Dirigir sob a influência de álcool ou drogas</p>
+                </div>
+              </details>
+            </div>
+          </details>
+          <details class="category">
+            <summary>Fatal incidents <span class="badge">3 subcategorias</span></summary>
+            <div class="category-body">
+              <details class="item">
+                <summary>Natural death</summary>
+                <div class="description">
+                  <p>Morte por causas naturais ocorrida durante ou relacionada a um passeio</p>
+                </div>
+              </details>
+              <details class="item">
+                <summary>Fatal road accident</summary>
+                <div class="description">
+                  <p>Morte em decorrência de acidente de trânsito durante o passeio</p>
+                </div>
+              </details>
+              <details class="item">
+                <summary>Murder</summary>
+                <div class="description">
+                  <p>Homicídio doloso ocorrido durante ou relacionado a um passeio</p>
+                </div>
+              </details>
+            </div>
+          </details>
+        </div>
+      </details>
+      <details class="topic" data-search="complaints against passenger cancellation complaint financial issues passenger behavior passenger did not show up different adress passenger cancelled price renegotiation passenger didn&#x27;t pay part of price passenger didn&#x27;t pay at all passenger has no change cleaning fee change of destination point waiting fee toll roads passenger is late unplanned stops did not add the description extra passengers smoking passenger drunk passenger o passageiro não apareceu no ponto a. o usuário estava em um endereço diferente, o que impediu a conclusão do pedido. (apenas para casos em que nenhuma taxa de serviço foi cobrada) motorista reclama que passageiro cancelou a corrida reclamação do passageiro referente a alterações de tarifa reclamação sobre passageiro que não pagou parte da tarifa da corrida. queixa de que o passageiro não pagou a tarifa integral. reclamação de passageiro que não tinha o troco correto para a passagem. consulta financeira relativa à contaminação do interior do veículo (passageiro vomitou, derramou café, etc.). solicitação de alteração de preço devido à mudança de destino. solicitação referente à cobrança da taxa de espera de passageiros solicitação de pagamento de pedágio em rodovias reclamação sobre atraso de passageiro reclamação sobre paradas não planejadas durante a viagem reclamação de que o passageiro não adicionou uma descrição da viagem. reclamação sobre a presença de passageiros adicionais não especificados no pedido. queixa sobre um passageiro que fumou durante a viagem. denúncia de um passageiro embriagado">
+        <summary>Complaints against Passenger <span class="badge">3 categorias · 17 subcategorias</span></summary>
+        <div class="topic-body">
+          <details class="category">
+            <summary>Cancellation complaint <span class="badge">3 subcategorias</span></summary>
+            <div class="category-body">
+              <details class="item">
+                <summary>Passenger did not show up</summary>
+                <div class="description">
+                  <p>O passageiro não apareceu no ponto A.</p>
+                </div>
+              </details>
+              <details class="item">
+                <summary>Different adress</summary>
+                <div class="description">
+                  <p>O usuário estava em um endereço diferente, o que impediu a conclusão do pedido. (apenas para casos em que nenhuma taxa de serviço foi cobrada)</p>
+                </div>
+              </details>
+              <details class="item">
+                <summary>Passenger cancelled</summary>
+                <div class="description">
+                  <p>Motorista reclama que passageiro cancelou a corrida</p>
+                </div>
+              </details>
+            </div>
+          </details>
+          <details class="category">
+            <summary>Financial issues <span class="badge">8 subcategorias</span></summary>
+            <div class="category-body">
+              <details class="item">
+                <summary>Price renegotiation</summary>
+                <div class="description">
+                  <p>Reclamação do passageiro referente a alterações de tarifa</p>
+                </div>
+              </details>
+              <details class="item">
+                <summary>Passenger didn&#x27;t pay part of price</summary>
+                <div class="description">
+                  <p>Reclamação sobre passageiro que não pagou parte da tarifa da corrida.</p>
+                </div>
+              </details>
+              <details class="item">
+                <summary>Passenger didn&#x27;t pay at all</summary>
+                <div class="description">
+                  <p>Queixa de que o passageiro não pagou a tarifa integral.</p>
+                </div>
+              </details>
+              <details class="item">
+                <summary>Passenger has no change</summary>
+                <div class="description">
+                  <p>Reclamação de passageiro que não tinha o troco correto para a passagem.</p>
+                </div>
+              </details>
+              <details class="item">
+                <summary>Cleaning fee</summary>
+                <div class="description">
+                  <p>Consulta financeira relativa à contaminação do interior do veículo (passageiro vomitou, derramou café, etc.).</p>
+                </div>
+              </details>
+              <details class="item">
+                <summary>Change of destination point</summary>
+                <div class="description">
+                  <p>Solicitação de alteração de preço devido à mudança de destino.</p>
+                </div>
+              </details>
+              <details class="item">
+                <summary>Waiting fee</summary>
+                <div class="description">
+                  <p>Solicitação referente à cobrança da taxa de espera de passageiros</p>
+                </div>
+              </details>
+              <details class="item">
+                <summary>Toll roads</summary>
+                <div class="description">
+                  <p>Solicitação de pagamento de pedágio em rodovias</p>
+                </div>
+              </details>
+            </div>
+          </details>
+          <details class="category">
+            <summary>Passenger behavior <span class="badge">6 subcategorias</span></summary>
+            <div class="category-body">
+              <details class="item">
+                <summary>Passenger is late</summary>
+                <div class="description">
+                  <p>Reclamação sobre atraso de passageiro</p>
+                </div>
+              </details>
+              <details class="item">
+                <summary>Unplanned stops</summary>
+                <div class="description">
+                  <p>Reclamação sobre paradas não planejadas durante a viagem</p>
+                </div>
+              </details>
+              <details class="item">
+                <summary>Did not add the description</summary>
+                <div class="description">
+                  <p>Reclamação de que o passageiro não adicionou uma descrição da viagem.</p>
+                </div>
+              </details>
+              <details class="item">
+                <summary>Extra passengers</summary>
+                <div class="description">
+                  <p>Reclamação sobre a presença de passageiros adicionais não especificados no pedido.</p>
+                </div>
+              </details>
+              <details class="item">
+                <summary>Smoking passenger</summary>
+                <div class="description">
+                  <p>Queixa sobre um passageiro que fumou durante a viagem.</p>
+                </div>
+              </details>
+              <details class="item">
+                <summary>Drunk passenger</summary>
+                <div class="description">
+                  <p>Denúncia de um passageiro embriagado</p>
+                </div>
+              </details>
+            </div>
+          </details>
+        </div>
+      </details>
+    </section>
+  </main>
+  <script>
+    const accordion = document.getElementById('accordion');
+    const search = document.getElementById('search');
+    const openAll = document.getElementById('openAll');
+    const closeAll = document.getElementById('closeAll');
+
+    openAll.addEventListener('click', () => {
+      accordion.querySelectorAll('details:not(.hidden)').forEach(detail => detail.open = true);
+    });
+
+    closeAll.addEventListener('click', () => {
+      accordion.querySelectorAll('details').forEach(detail => detail.open = false);
+      search.value = '';
+      accordion.querySelectorAll('.hidden').forEach(el => el.classList.remove('hidden'));
+    });
+
+    search.addEventListener('input', () => {
+      const term = search.value.trim().toLowerCase();
+      const topics = accordion.querySelectorAll('.topic');
+      topics.forEach(topic => {
+        const matches = topic.dataset.search.includes(term);
+        topic.classList.toggle('hidden', term && !matches);
+        if (term && matches) topic.open = true;
+        if (!term) topic.open = false;
+      });
+    });
+  </script>
+</body>
+</html>
